@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="vuyxnphi@trumpet.db.elephantsql.com" uuid="d6e3691c-2317-4fbd-8b6f-73ad46a2fb13">
+    <data-source source="LOCAL" name="document_flow_db@dpg-cjlrmr8cfp5c73d205j0-a.frankfurt-postgres.render.com" uuid="4428d747-b6d2-481a-b78b-e5344c2d63f1">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://trumpet.db.elephantsql.com:5432/vuyxnphi</jdbc-url>
+      <jdbc-url>jdbc:postgresql://dpg-cjlrmr8cfp5c73d205j0-a.frankfurt-postgres.render.com:5432/document_flow_db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
