@@ -1,21 +1,17 @@
-import os
-import sys
-
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from config.settings import dev as settings
+from dj_config_url import parse
 import psycopg2
 
-db_settings = settings.DATABASES["default"]
+url = "postgres://vuyxnphi:Ri5klwnxNX4NRYwV9etHpaqKut3XvHm2@trumpet.db.elephantsql.com/vuyxnphi"
+
+db_config = parse(url)
 
 try:
     conn = psycopg2.connect(
-        dbname=db_settings["NAME"],
-        user=db_settings["USER"],
-        password=db_settings["PASSWORD"],
-        host=db_settings["HOST"],
-        port=db_settings["PORT"],
+        dbname=db_config['NAME'],
+        user=db_config['USER'],
+        password=db_config['PASSWORD'],
+        host=db_config['HOST'],
+        port=db_config['PORT'],
     )
 
     print("Successfully connected to PostgreSQL!")

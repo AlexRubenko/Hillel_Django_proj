@@ -62,8 +62,6 @@ class CADDocument(models.Model):
         return f"{self.get_document_type_display()} - {self.file.name}"
 
 
-
-
 class Project(models.Model):
     name = models.CharField(max_length=100)
     project_number = models.CharField(max_length=25)
