@@ -24,10 +24,12 @@ jobs:
           pip install -r requirements.txt
       - name: Set up ElephantSQL API key
         run: echo "ELEPHANTSQL_API_KEY=$ELEPHANTSQL_API_KEY" >> $GITHUB_ENV
+      - name: Generate Test Database Name
+        run: echo "DATABASE_NAME=test_$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
       - name: Create Test Database
         run: |
           curl -u :$ELEPHANTSQL_API_KEY \
-          -d "name=test&plan=spider&region=amazon-web-services::eu-east-1" \
+          -d "name=$DATABASE_NAME&plan=spider&region=amazon-web-services::eu-east-1" \
           https://customer.elephantsql.com/api/instances
       - name: Run tests
         run: |
