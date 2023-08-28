@@ -1,41 +1,36 @@
-name: My project CI CD
+name: Document_flow CI CD
+
 
 on:
   - push
   - pull_request
 
+
 jobs:
   test:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
+      max-parallel: 4
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ["3.11"]
 
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Set up ElephantSQL API key
-        run: echo "ELEPHANTSQL_API_KEY=$ELEPHANTSQL_API_KEY" >> $GITHUB_ENV
-      - name: Generate Test Database Name
-        run: echo "DATABASE_NAME=test_$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
-      - name: Create Test Database
+      - name: Check migrations
         run: |
-          curl -u :$ELEPHANTSQL_API_KEY \
-          -d "name=$DATABASE_NAME&plan=spider&region=amazon-web-services::eu-east-1" \
-          https://customer.elephantsql.com/api/instances
+          python src/manage.py makemigrations
+          python src/manage.py migrate
+          python src/manage.py check
       - name: Run tests
         run: |
           python src/manage.py test && flake8
-      - name: Delete Test Database
-        run: |
-          INSTANCE_ID=$(curl -s -u :$ELEPHANTSQL_API_KEY https://customer.elephantsql.com/api/instances | grep -o '"id":[0-9]*' | sed 's/"id"://')
-          curl -XDELETE -u :$ELEPHANTSQL_API_KEY \
-          "https://customer.elephantsql.com/api/instances/$INSTANCE_ID"

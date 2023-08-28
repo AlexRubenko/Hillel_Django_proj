@@ -52,11 +52,17 @@ class CADDocument(models.Model):
     )
 
     document_type = models.CharField(max_length=20, choices=TYPE_CHOICES)
-    file = models.FileField(upload_to='cad_documents/')
+    file = models.FileField(upload_to='cad_documents/', blank=True, null=True)
     description = models.TextField(max_length=300)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='actual')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    @property
+    def file_url(self):
+        if self.file:
+            return self.file.url
+        return None
 
     def __str__(self):
         return f"{self.get_document_type_display()} - {self.file.name}"
@@ -74,7 +80,7 @@ class Project(models.Model):
 
 @receiver(post_save, sender=CADDocument)
 def create_document_update_log(sender, instance, created, **kwargs):
-    user = CustomUser.objects.first()  # Это временное решение
+    user = CustomUser.objects.first()
     if not created:
         ChangeLog.objects.create(
             document=instance,
