@@ -8,7 +8,7 @@ SECRET_KEY = "django-secret-key"
 
 ALLOWED_HOSTS = []
 
-url = "postgres://vuyxnphi:Ri5klwnxNX4NRYwV9etHpaqKut3XvHm2@trumpet.db.elephantsql.com/vuyxnphi"
+url = "postgres://juvdcpov:9AvNuu4Iw_mLt8B4LSx3IYl2V_OzJeZD@trumpet.db.elephantsql.com/juvdcpov"
 db_config = dj_database_url.parse(url)
 
 DATABASES = {
