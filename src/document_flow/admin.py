@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from document_flow.models import CADDocument, Project
+
+admin.site.register([CADDocument, Project])

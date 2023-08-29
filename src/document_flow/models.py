@@ -1,31 +1,11 @@
-from django.db import models
-from django.db.models.signals import post_save, post_delete
-from django.dispatch import receiver
 from datetime import datetime
 
+from django.conf import settings
+from django.db import models
+from django.db.models.signals import post_delete, post_save
+from django.dispatch import receiver
 
-class CustomUser(models.Model):
-    ACCESS_CHOICES = (
-        ('edit', 'Full Edit Access'),
-        ('view', 'View-Only Access'),
-    )
-
-    ROLES = (
-        ('manager', 'Manager'),
-        ('engineer', 'Engineer'),
-    )
-
-    role = models.CharField(max_length=20, choices=ROLES)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=20, blank=False)
-    access_status = models.CharField(max_length=20, choices=ACCESS_CHOICES, default='view')
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+from account.models import CustomUser
 
 
 class ChangeLog(models.Model):
@@ -52,11 +32,15 @@ class CADDocument(models.Model):
     )
 
     document_type = models.CharField(max_length=20, choices=TYPE_CHOICES)
-    file = models.FileField(upload_to='cad_documents/', blank=True, null=True)
+    file = models.FileField(upload_to='media/cad_documents/', blank=True, null=True)
     description = models.TextField(max_length=300)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='actual')
-    created = models.DateTimeField(auto_now_add=True)
+    uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, editable=False)
+    uploaded = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-uploaded']
 
     @property
     def file_url(self):
@@ -73,6 +57,9 @@ class Project(models.Model):
     project_number = models.CharField(max_length=25)
     documents = models.ManyToManyField(CADDocument, blank=True, related_name="projects")
     created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created']
 
     def __str__(self):
         return self.name
@@ -91,7 +78,7 @@ def create_document_update_log(sender, instance, created, **kwargs):
 
 @receiver(post_delete, sender=CADDocument)
 def create_document_delete_log(sender, instance, **kwargs):
-    user = CustomUser.objects.first()  # Это временное решение
+    user = CustomUser.objects.first()
     ChangeLog.objects.create(
         document=instance,
         user=user,
