@@ -1,0 +1,43 @@
+{% extends "document_flow/index.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="mt-4">
+        <table class="table table-dark table-striped">
+      <thead>
+        <tr>
+              <th scope="col">#</th>
+              <th scope="col">Document number</th>
+              <th scope="col">Document name</th>
+              <th scope="col">Document type</th>
+              <th scope="col">Description</th>
+              <th scope="col">Document status</th>
+              <th scope="col">Uploaded by</th>
+              <th scope="col">Edit</th>
+              <th scope="col">Delete</th>
+        </tr>
+      </thead>
+          <tbody>
+          {% for document in documents %}
+            <tr>
+              <th scope="row">{{ document.id }}</th>
+              <td>{{ document.document_number }}</td>
+              <td>{{ document.document_name }}</td>
+              <td>{{ document.document_type }}</td>
+              <td>{{ document.description }}</td>
+              <td>{{ document.status }}</td>
+              <td>{{ document.uploaded_by }}</td>
+                <td>
+                    <a type="button" class="btn btn-warning"
+                    href="{%  url 'documents:update_document' document.pk %}">Update</a>
+                </td>
+                <td>
+                    <a type="button" class="btn btn-danger"
+                    href="{%  url 'documents:delete_document' document.pk %}">Delete</a>
+                </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+    </div>
+{% endblock content %}
