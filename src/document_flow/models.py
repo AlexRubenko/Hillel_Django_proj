@@ -30,7 +30,8 @@ class CADDocument(models.Model):
         ('actual', 'Actual'),
         ('canceled', 'Canceled'),
     )
-
+    document_number = models.CharField(max_length=50, blank=False, default="document number needed")
+    document_name = models.CharField(max_length=100, blank=True, default="document name needed")
     document_type = models.CharField(max_length=20, choices=TYPE_CHOICES)
     file = models.FileField(upload_to='media/cad_documents/', blank=True, null=True)
     description = models.TextField(max_length=300)

@@ -1,14 +1,17 @@
 asgiref==3.7.2
 dj-config-url==0.1.1
 Django==4.2.4
+django-crispy-forms==2.0
 django-extensions==3.2.3
 django-phonenumber-field==7.1.0
 flake8==6.1.0
 isort==5.12.0
+marshmallow==3.20.1
 mccabe==0.7.0
 mypy==1.5.1
 mypy-extensions==1.0.0
 numpy==1.25.2
+packaging==23.1
 phonenumbers==8.13.19
 Pillow==9.5.0
 psycopg2-binary==2.9.7
@@ -18,3 +21,4 @@ pyflakes==3.1.0
 pyparsing==3.1.1
 sqlparse==0.4.4
 typing_extensions==4.7.1
+webargs==8.3.0
