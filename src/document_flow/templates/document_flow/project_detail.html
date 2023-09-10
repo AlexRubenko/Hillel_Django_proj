@@ -1,0 +1,9 @@
+{% extends "document_flow/index.html" %}
+
+{% block content %}
+  <h1>Project Details</h1>
+  <p>Name: {{ project.name }}</p>
+  <p>Project Number: {{ project.project_number }}</p>
+  <p>Created: {{ project.created }}</p>
+  <a href="{% url 'document_flow:projects_list' %}">Back to Projects List</a>
+{% endblock %}

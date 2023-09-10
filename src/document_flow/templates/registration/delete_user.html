@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete User</title>
+    <style>
+        body {
+            background-color: blue;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            margin: 0;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Increase the font size of labels */
+        label {
+            font-size: 2em; /* Double the font size */
+        }
+
+        /* Decrease the font size of input fields and select */
+        input,
+        select {
+            font-size: 1.7em; /* Reduce the font size by 15% */
+        }
+    </style>
+</head>
+<body>
+    <h2>Delete User</h2>
+    <form method="post">
+        {% csrf_token %}
+        <p>Are you sure you want to delete the user {{ user.first_name }} {{ user.last_name }}?</p>
+        <button type="submit">Delete</button>
+        <a href="{% url 'user_list' %}">Cancel</a>
+    </form>
+</body>
+</html>
