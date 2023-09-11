@@ -1,0 +1,24 @@
+{% extends "document_flow/index.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Login</h2>
+
+    {% if messages %}
+    <div class="alert alert-danger">
+        <ul class="errorlist">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <p><label for="{{ form.username.id_for_label }}">Email:</label>{{ form.username }}</p>
+        <p><label for="{{ form.password.id_for_label }}">Password:</label>{{ form.password }}</p>
+        <button type="submit">Login</button>
+    </form>
+</div>
+{% endblock %}

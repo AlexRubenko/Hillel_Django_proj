@@ -1,0 +1,21 @@
+{% extends "document_flow/index.html" %}
+
+{% block content %}
+  <h1>Create a New Project</h1>
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="{{ form.name.id_for_label }}">Name:</label>
+      {{ form.name }}
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.project_number.id_for_label }}">Project Number:</label>
+      {{ form.project_number }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Project</button>
+  </form>
+  <a href="{% url 'document_flow:projects_list' %}">Back to Projects List</a>
+{% endblock %}

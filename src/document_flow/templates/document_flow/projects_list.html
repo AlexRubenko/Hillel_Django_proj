@@ -1,0 +1,17 @@
+{% extends "document_flow/index.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h1>Projects List</h1>
+  <ul>
+    {% for project in projects %}
+      <li>
+        <a href="{% url 'document_flow:project_detail' project.pk %}">{{ project.name }}</a>
+        (Project Number: {{ project.project_number }})
+      </li>
+    {% empty %}
+      <li>The project list is empty.</li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'document_flow:create_project' %}">Create a New Project</a>
+{% endblock %}

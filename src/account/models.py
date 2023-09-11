@@ -20,7 +20,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     role = models.CharField(max_length=20, choices=ROLES)
     first_name = models.CharField(_("Name"), max_length=150)
     last_name = models.CharField(_("Surname"), max_length=150)
-    email = models.EmailField(_("Email address"), unique=True)
+    email = models.EmailField(_("Email address"), unique=True, blank=False, null=False)
     phone_number = PhoneNumberField(_("Phone number"), null=True, blank=True)
 
     is_staff = models.BooleanField(
@@ -43,9 +43,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     objects = CustomerManager()
-
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
 
     class Meta:
         verbose_name = _("user")

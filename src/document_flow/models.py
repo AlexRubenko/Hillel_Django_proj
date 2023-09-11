@@ -8,14 +8,16 @@ from django.dispatch import receiver
 from account.models import CustomUser
 
 
-class ChangeLog(models.Model):
-    document = models.ForeignKey('CADDocument', on_delete=models.DO_NOTHING)
-    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
-    change_datetime = models.DateTimeField(default=datetime.now)
-    description = models.TextField()
+class Project(models.Model):
+    name = models.CharField(max_length=100)
+    project_number = models.CharField(max_length=25, unique=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created']
 
     def __str__(self):
-        return f"{self.document} - {self.change_datetime} by {self.user}"
+        return self.name
 
 
 class CADDocument(models.Model):
@@ -39,6 +41,7 @@ class CADDocument(models.Model):
     uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, editable=False)
     uploaded = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='documents', to_field='project_number')
 
     class Meta:
         ordering = ['-uploaded']
@@ -53,35 +56,39 @@ class CADDocument(models.Model):
         return f"{self.get_document_type_display()} - {self.file.name}"
 
 
-class Project(models.Model):
-    name = models.CharField(max_length=100)
-    project_number = models.CharField(max_length=25)
-    documents = models.ManyToManyField(CADDocument, blank=True, related_name="projects")
-    created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ['-created']
+class ChangeLog(models.Model):
+    document = models.ForeignKey(CADDocument, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+    change_datetime = models.DateTimeField(default=datetime.now)
+    description = models.TextField()
 
     def __str__(self):
-        return self.name
+        return f"{self.document} - {self.change_datetime} by {self.user}"
 
 
 @receiver(post_save, sender=CADDocument)
-def create_document_update_log(sender, instance, created, **kwargs):
-    user = CustomUser.objects.first()
-    if not created:
+def create_change_log_on_document_creation(sender, instance, created, **kwargs):
+    if created:
         ChangeLog.objects.create(
             document=instance,
-            user=user,
-            description=f"Document {instance.id} was updated."
+            user=instance.uploaded_by,
+            description=f"Document created on {instance.uploaded}"
         )
 
 
-@receiver(post_delete, sender=CADDocument)
-def create_document_delete_log(sender, instance, **kwargs):
-    user = CustomUser.objects.first()
+@receiver(post_save, sender=CADDocument)
+def create_change_log_on_document_update(sender, instance, **kwargs):
     ChangeLog.objects.create(
         document=instance,
-        user=user,
-        description=f"Document {instance.id} was deleted."
+        user=instance.uploaded_by,
+        description=f"Document updated on {instance.updated}"
+    )
+
+
+@receiver(post_delete, sender=CADDocument)
+def create_change_log_on_document_deletion(sender, instance, **kwargs):
+    ChangeLog.objects.create(
+        document=instance,
+        user=instance.uploaded_by,
+        description=f"Document deleted on {instance.updated}"
     )

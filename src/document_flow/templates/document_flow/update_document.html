@@ -1,0 +1,16 @@
+{% extends "document_flow/index.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="mt-4">
+        <h1>Update Document</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Update</button>
+        </form>
+
+        <a href="{% url 'document_flow:get_documents' %}">Back to Document List</a>
+    </div>
+{% endblock content %}

@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 
+from django.template.context_processors import media
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -19,6 +21,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "phonenumber_field",
     "crispy_forms",
+    "rest_framework",
     "account",
     "document_flow",
 ]
@@ -99,3 +102,13 @@ STATICFILES_DIRS = [
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+LOGIN_TEMPLATE = 'document_flow/registration/login.html'
+
+LOGIN_URL = 'login'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 1209600
+
+LOGIN_REDIRECT_URL = 'document_flow:get_documents'

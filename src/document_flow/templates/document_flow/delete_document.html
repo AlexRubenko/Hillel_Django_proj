@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Document</title>
+</head>
+<body>
+    <h1>Delete Document</h1>
+
+    <p>Are you sure you want to delete the following document?</p>
+
+    <p><strong>Document Number:</strong> {{ document.document_number }}</p>
+    <p><strong>Document Name:</strong> {{ document.document_name }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <button type="submit">Delete</button>
+    </form>
+
+    <a href="{% url 'get_documents' %}">Cancel and Back to Document List</a>
+</body>
+</html>

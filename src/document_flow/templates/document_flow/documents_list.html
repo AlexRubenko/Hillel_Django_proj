@@ -4,40 +4,45 @@
 {% block content %}
     <div class="mt-4">
         <table class="table table-dark table-striped">
-      <thead>
-        <tr>
-              <th scope="col">#</th>
-              <th scope="col">Document number</th>
-              <th scope="col">Document name</th>
-              <th scope="col">Document type</th>
-              <th scope="col">Description</th>
-              <th scope="col">Document status</th>
-              <th scope="col">Uploaded by</th>
-              <th scope="col">Edit</th>
-              <th scope="col">Delete</th>
-        </tr>
-      </thead>
-          <tbody>
-          {% for document in documents %}
-            <tr>
-              <th scope="row">{{ document.id }}</th>
-              <td>{{ document.document_number }}</td>
-              <td>{{ document.document_name }}</td>
-              <td>{{ document.document_type }}</td>
-              <td>{{ document.description }}</td>
-              <td>{{ document.status }}</td>
-              <td>{{ document.uploaded_by }}</td>
-                <td>
-                    <a type="button" class="btn btn-warning"
-                    href="{%  url 'documents:update_document' document.pk %}">Update</a>
-                </td>
-                <td>
-                    <a type="button" class="btn btn-danger"
-                    href="{%  url 'documents:delete_document' document.pk %}">Delete</a>
-                </td>
-            </tr>
-          {% endfor %}
-          </tbody>
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Document number</th>
+                    <th scope="col">Document name</th>
+                    <th scope="col">Project number</th>
+                    <th scope="col">Document type</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Document status</th>
+                    <th scope="col">Uploaded by</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for document in documents %}
+                    <tr>
+                        <th scope="row">{{ document.id }}</th>
+                        <td>{{ document.document_number }}</td>
+                        <td>{{ document.document_name }}</td>
+                        <td>{{ document.project }}</td>
+                        <td>{{ document.document_type }}</td>
+                        <td>{{ document.description }}</td>
+                        <td>{{ document.status }}</td>
+                        <td>{{ document.uploaded_by }}</td>
+                        <td>
+                            <a type="button" class="btn btn-warning"
+                                href="{% url 'document_flow:update_document' document.pk %}">Update</a>
+                        </td>
+                        <td>
+                            <a type="button" class="btn btn-danger"
+                                href="{% url 'document_flow:delete_document' document.pk %}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
+    </div>
+    <div class="d-flex justify-content-end">
+        <a type="button" class="btn btn-primary ml-auto" href="{% url 'document_flow:create_document' %}">Create Document</a>
     </div>
 {% endblock content %}
