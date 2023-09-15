@@ -36,4 +36,3 @@ urlpatterns = [
     path("projects/", ProjectViewList.as_view(), name="projects_list"),
     path('projects/<int:pk>/', ProjectDetailView.as_view(), name='project-detail'),
 ]
-
