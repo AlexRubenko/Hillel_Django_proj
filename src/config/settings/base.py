@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from django.template.context_processors import media
@@ -22,6 +23,9 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "crispy_forms",
     "rest_framework",
+    "drf_yasg",
+    'rest_framework_simplejwt',
+    'djoser',
     "account",
     "document_flow",
 ]
@@ -112,3 +116,28 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 1209600
 
 LOGIN_REDIRECT_URL = 'document_flow:get_documents'
+
+SWAGGER_SETTINGS = {
+    'LOGIN_URL': 'document_flow:login',
+}
+
+REST_FRAMEWORK = {
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"]
+}
+
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=14),
+}
+
+DJOSER = {
+    "LOGIN_FIELD": "email",
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "PASSWORD_RESET_CONFIRM_RETYPE": True,
+    "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": True,
+}
