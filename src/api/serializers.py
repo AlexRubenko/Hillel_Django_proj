@@ -7,7 +7,7 @@ from document_flow.models import CADDocument, Project
 class CustomerSerializer(ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ("first_name", "last_name", "email", "is_staff")
+        fields = ("first_name", "last_name", "email", "is_staff", "role", "phone_number", "is_active", "access_status")
 
 
 class CADDocumentSerializer(ModelSerializer):
