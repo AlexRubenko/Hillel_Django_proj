@@ -1,0 +1,32 @@
+version: "3"
+
+
+services:
+  backend:
+    build: ./
+    container_name: cad_document_flow_container
+    working_dir: /cad_documents_app
+    ports:
+      - 8008:8008
+    command:
+      - /cad_documents_app/commands/start_server_dev.sh
+    volumes:
+      - ./src:/cad_documents_app/src
+      - ./commands/:/cad_documents_app/commands
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+
+
+  postgres:
+    image: postgres:12
+    ports:
+      - 5433:5432
+    volumes:
+      -  pg_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+volumes:
+  pg_data: {}
